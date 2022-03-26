@@ -120,13 +120,13 @@ struct element *fittest(struct element *population)
 
 void shuffle(char *str)
 {
-  size_t  i = 0,
-          random = 0,
+  size_t  i = 0u,
+          random = 0u,
           length = strlen(str);
 
   char temp = '\0';
 
-  for (i = length - 1; i > 0u; --i)
+  for (i = length - 1u; i > 0u; --i)
   {
       random = rand() % (i + 1u);
       temp = str[random];
