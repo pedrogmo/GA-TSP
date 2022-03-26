@@ -34,12 +34,12 @@ static unsigned int DISTANCES[N_CITIES][N_CITIES] =
 static double fitness_fn(const struct element *);
 static void shuffle(char *);
 static void initialise(struct element *);
-static struct element *fittest(struct element *);
+static const struct element *fittest(const struct element *);
 
 int main(int argc, char **argv)
 {
-  struct element  population[POPULATION_SIZE]= {0},
-                  *best = NULL;
+  struct element population[POPULATION_SIZE] = {};
+  const struct element *best = NULL;
   size_t i = 0u, j = 0u, gen = 0u;
 
   /* Mirror matrix of distances */
@@ -59,6 +59,9 @@ int main(int argc, char **argv)
   {
 
   }
+
+  best = fittest(population);
+  printf("Solution: %s\n", best->tour);
 
   return EXIT_SUCCESS;
 }
@@ -94,7 +97,7 @@ double fitness_fn(const struct element *solution)
 
   for(i = 0u; i < N_CITIES - 1; ++i)
   {
-    size_t to = solution->tour[i] - 'A' + 1u;
+    to = solution->tour[i] - 'A' + 1u;
     total_distance += DISTANCES[from][to];
     from = to;
   }
@@ -104,7 +107,7 @@ double fitness_fn(const struct element *solution)
   return 1.0 / total_distance;
 }
 
-struct element *fittest(struct element *population)
+const struct element *fittest(const struct element *population)
 {
   size_t i = 1u;
   size_t best = 0u;
