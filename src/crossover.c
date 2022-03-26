@@ -75,7 +75,7 @@ void ox(const char *p1, const char *p2, char *f1, size_t length)
   }
 
   /* Copy remaining elements from P2 in the order they appear */
-  for(i1 = i2 = (to + 1) % length; 
+  for(i1 = i2 = (to + 1) % length;
       i1 != from;
       i2 = (i2 + 1) % length)
   {
@@ -109,3 +109,72 @@ void cx(const char *p1, const char *p2, char *f1, size_t length)
       f1[i] = p2[i];
   }
 }
+
+/*
+#define BUFSIZE 1024
+
+int main(int argc, char **argv)
+{
+  char  offspring[BUFSIZE],
+        *parent1 = NULL,
+        *parent2 = NULL,
+        *method = NULL;;
+
+  size_t  l1 = 0u,
+          l2 = 0u,
+          i = 0u;
+
+  if (argc != 4)
+  {
+    fprintf(stderr, "usage: %s parent1 parent2 method\n", argv[0]);
+    return EXIT_FAILURE;
+  }
+
+  *offspring = '\0';
+  parent1 = argv[1];
+  parent2 = argv[2];
+  method = argv[3];
+
+  l1 = strlen(parent1);
+  l2 = strlen(parent2);
+
+  // Strings have different lengths
+  if (l1 != l2)
+  {
+    fprintf(stderr, "Parents should have the same length\n");
+    return EXIT_FAILURE;
+  }
+
+  // Length exceeded buffer size
+  if (l1 >= BUFSIZE)
+  {
+    fprintf(stderr, "The parents' length should not be over %i\n", BUFSIZE);
+    return EXIT_FAILURE;
+  }
+
+  // Convert arguments to upper case 
+  for(i = 0u; i < l1; ++i)
+  {
+    parent1[i] = toupper(parent1[i]);
+    parent2[i] = toupper(parent2[i]);
+    method[i] = toupper(method[i]);
+  }
+
+  srand((unsigned) time(NULL));
+
+  if (strncmp(method, "PMX", 3) == 0)
+  {
+    pmx(parent1, parent2, offspring, l1);
+  }
+  else if (strncmp(method, "OX", 2) == 0)
+  {
+    ox(parent1, parent2, offspring, l1);
+  }
+  else if (strncmp(method, "CX", 2) == 0)
+  {
+    cx(parent1, parent2, offspring, l1);
+  }
+
+  printf("Offspring: %s\n", offspring);
+}
+*/
