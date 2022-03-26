@@ -75,7 +75,9 @@ void ox(const char *p1, const char *p2, char *f1, size_t length)
   }
 
   /* Copy remaining elements from P2 in the order they appear */
-  for(i1 = i2 = to + 1; i1 != from; i2 = (i2 + 1) % length)
+  for(i1 = i2 = (to + 1) % length; 
+      i1 != from;
+      i2 = (i2 + 1) % length)
   {
     /* Add new element from P2 if does not already exist */
     if (!exists(f1, p2[i2]))

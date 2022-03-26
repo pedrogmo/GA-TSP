@@ -4,7 +4,6 @@
 #include "selection.h"
 #include "crossover.h"
 
-
 unsigned int DISTANCES[N_CITIES][N_CITIES] =
 {
   {0},
@@ -104,7 +103,7 @@ void reproduce(struct element *population)
     while(p2 != p1);
 
     /* Crossover two parents making one child */
-    pmx(p1->tour, p2->tour, population[i].tour, N_CITIES - 1);
+    ox(p1->tour, p2->tour, population[i].tour, N_CITIES - 1);
 
     /* Mutation: random swap*/
     random = (double) rand() / RAND_MAX;

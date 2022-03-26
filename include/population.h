@@ -1,9 +1,9 @@
 #ifndef POPULATION_H
 #define POPULATION_H
 
-#define POPULATION_SIZE 10
+#define POPULATION_SIZE 100
 #define N_CITIES 21
-#define MUTATION_RATE 0.01
+#define MUTATION_RATE 0.05
 
 struct element
 {

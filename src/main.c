@@ -4,6 +4,8 @@
 
 #include "population.h"
 
+#define N_GENERATIONS 1000u
+
 extern const struct element *fittest(const struct element *);
 
 int main(int argc, char **argv)
@@ -23,18 +25,18 @@ int main(int argc, char **argv)
 
   srand((unsigned) time(NULL));
   initialise(population);
+  update_fit_prob(population);
 
-  /* Termination condition: 100 generations */
-  for(gen = 1u; gen <= 100u; ++gen)
+  /* Termination condition: N generations */
+  for(gen = 1u; gen <= N_GENERATIONS; ++gen)
   {
     best = fittest(population);
     printf("Fittest: %s %lf %lf%%\n", best->tour, best->fitness, best->probability * 100.0);
 
-    update_fit_prob(population);
     reproduce(population);
+    update_fit_prob(population);
   }
 
-  update_fit_prob(population);
   best = fittest(population);
   printf("Solution: %s\n", best->tour);
 
