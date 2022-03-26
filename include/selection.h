@@ -6,9 +6,9 @@
 #define K_SUS 2
 #define K_TRUC 50
 
-extern const struct element *rws(const struct element *population);
-extern const struct element *tournament(const struct element *population);
-extern const struct element *sus(const struct element *population);
-extern const struct element *truncation(const struct element *population);
+extern struct element *rws(struct element *population);
+extern struct element *sus(struct element *population);
+extern struct element *tournament(struct element *population);
+extern struct element *truncation(struct element *population);
 
 #endif /* SELECTION_H */
