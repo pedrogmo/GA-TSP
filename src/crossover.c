@@ -4,6 +4,8 @@
 #include <assert.h>
 #include "crossover.h"
 
+#define PMX_METHOD 2
+
 #define MAX(X, Y) ((X) > (Y)) ? (X) : (Y)
 #define MIN(X, Y) ((X) < (Y)) ? (X) : (Y)
 
@@ -39,6 +41,7 @@ void pmx(const char *p1, const char *p2, char *f1, size_t length)
     f1[i] = p1[i];
   }
 
+#if PMX_METHOD == 1
   /* Map elements between P1 and P2 */
   for(i1 = 0u, i2 = 0u; i2 < length; ++i2)
   {
@@ -53,6 +56,29 @@ void pmx(const char *p1, const char *p2, char *f1, size_t length)
       ++i1;
     }
   }
+#elif PXM_METHOD == 2
+  for(i1 = 0u, i2 = 0u; i1 < length; ++i1)
+  {
+    char corresp = '\0';
+
+    if (i1 >= from && i1 <= to)
+    {
+      i1 = to + 1;
+      if (i1 >= length)
+        break;
+    }
+
+    i2 = chrpos(p1, p2[i2]);
+    do
+    {
+      corresp = p2[i2];
+      i2 = chrpos(p1, corresp);
+    }
+    while(exists(f1, corresp));
+
+    f1[i1] = corresp;
+  }
+#endif
 }
 
 void ox(const char *p1, const char *p2, char *f1, size_t length)
@@ -152,7 +178,7 @@ int main(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  // Convert arguments to upper case 
+  // Convert arguments to upper case
   for(i = 0u; i < l1; ++i)
   {
     parent1[i] = toupper(parent1[i]);

@@ -36,8 +36,10 @@ static int sort_probability(const void *a, const void *b)
 
   if (e1->probability > e2->probability)
     return 1;
+
   else if (e1->probability < e2->probability)
     return -1;
+
   return 0;
 }
 
@@ -102,8 +104,10 @@ void reproduce(struct element *population)
     }
     while(p2 == p1);
 
+    /* Truncation: put T% in mating pool and pick 2 random for Xover */
+
     /* Crossover two parents making one child */
-    cx(p1->tour, p2->tour, population[i].tour, N_CITIES - 1);
+    pmx(p1->tour, p2->tour, population[i].tour, N_CITIES - 1);
 
     /* Mutation: random swap */
     random = (double) rand() / RAND_MAX;
