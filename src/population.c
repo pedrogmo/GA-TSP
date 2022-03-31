@@ -100,12 +100,12 @@ void reproduce(struct element *population)
     {
       p2 = rws(old_generation);
     }
-    while(p2 != p1);
+    while(p2 == p1);
 
     /* Crossover two parents making one child */
-    ox(p1->tour, p2->tour, population[i].tour, N_CITIES - 1);
+    cx(p1->tour, p2->tour, population[i].tour, N_CITIES - 1);
 
-    /* Mutation: random swap*/
+    /* Mutation: random swap */
     random = (double) rand() / RAND_MAX;
     if (random <= MUTATION_RATE)
     {

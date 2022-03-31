@@ -4,7 +4,7 @@
 
 #include "population.h"
 
-#define N_GENERATIONS 1000u
+#define N_GENERATIONS 10000u
 
 extern const struct element *fittest(const struct element *);
 
