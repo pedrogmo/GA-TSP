@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "selection.h"
 #include "crossover.h"
@@ -43,7 +44,7 @@ static int sort_probability(const void *a, const void *b)
   return 0;
 }
 
-static void shuffle(char *str)
+static void shuffle_string(char *str)
 {
   size_t  i = 0u,
           random = 0u,
@@ -57,6 +58,38 @@ static void shuffle(char *str)
       temp = str[random];
       str[random] = str[i];
       str[i] = temp;
+  }
+}
+
+static void shuffle_elements(struct element *elements, size_t length)
+{
+  size_t  i = 0u,
+          random = 0u;
+
+  struct element temp;
+
+  for (i = length - 1u; i > 0u; --i)
+  {
+      random = rand() % (i + 1u);
+      temp = elements[random];
+      elements[random] = elements[i];
+      elements[i] = temp;
+  }
+}
+
+static void mutate(struct element* child)
+{
+  /* Mutation: random swap */
+  double random = (double) rand() / RAND_MAX;
+  if (random <= MUTATION_RATE)
+  {
+    int i1 = rand() % (N_CITIES - 1),
+        i2 = rand() % (N_CITIES - 1);
+    char temp = '\0';
+
+    temp = child->tour[i1];
+    child->tour[i1] = child->tour[i2];
+    child->tour[i2] = temp;
   }
 }
 
@@ -76,17 +109,16 @@ void initialise(struct element *population)
       population[i].tour[city] = 'A' + city;
     }
 
-    shuffle(population[i].tour);
+    shuffle_string(population[i].tour);
   }
 }
 
-void reproduce(struct element *population)
+void reproduce_rws(struct element *population)
 {
   size_t i = 0u;
   struct element  *p1 = NULL,
                   *p2 = NULL,
                   old_generation[POPULATION_SIZE];
-  double random = 0.0;
 
   /* Sort population by fitness */
   qsort(population, POPULATION_SIZE, sizeof(*population), &sort_probability);
@@ -104,22 +136,48 @@ void reproduce(struct element *population)
     }
     while(p2 == p1);
 
-    /* Truncation: put T% in mating pool and pick 2 random for Xover */
-
     /* Crossover two parents making one child */
     pmx(p1->tour, p2->tour, population[i].tour, N_CITIES - 1);
 
-    /* Mutation: random swap */
-    random = (double) rand() / RAND_MAX;
-    if (random <= MUTATION_RATE)
-    {
-      int i1 = rand() % (N_CITIES - 1),
-          i2 = rand() % (N_CITIES - 1);
-      char temp = '\0';
+    mutate(population + i);
+  }
+}
 
-      temp = population[i].tour[i1];
-      population[i].tour[i1] = population[i].tour[i2];
-      population[i].tour[i2] = temp;
+void reproduce_truncation(struct element *population)
+{
+  size_t i = 0u;
+  struct element mating_pool[K_TRUNC];
+  bool completed = false;
+
+  /* Sort population by fitness */
+  qsort(population, POPULATION_SIZE, sizeof(*population), &sort_probability);
+
+  /* Put T% elements in the mating pool */
+  memcpy(mating_pool, population, K_TRUNC * sizeof(*population));
+
+  while(!completed)
+  {
+    size_t imate = 0u;
+
+    shuffle_elements(mating_pool, K_TRUNC);
+
+    for (imate = 0u; !completed && imate < K_TRUNC; imate += 2u)
+    {
+      /* Select two parents from mating pool */
+      struct element  *p1 = mating_pool + imate,
+                      *p2 = mating_pool + imate + 1u,
+                      *f1 = population + i;
+
+      /* Crossover two parents making one child */
+      pmx(p1->tour, p2->tour, f1->tour, N_CITIES - 1u);
+
+      mutate(f1);
+
+      /* If last element, completed */
+      if (i >= POPULATION_SIZE - 1u)
+        completed = true;
+      else
+        ++i;
     }
   }
 }
@@ -138,7 +196,7 @@ double fitness_fn(const struct element *solution)
     from = to;
   }
 
-  total_distance += DISTANCES[from][0];
+  total_distance += DISTANCES[from][0u];
 
   return 1.0 / total_distance;
 }
@@ -150,7 +208,7 @@ void update_fit_prob(struct element *population)
 
   for(i = 0u; i < POPULATION_SIZE; ++i)
   {
-    population[i].fitness = fitness_fn(&population[i]);
+    population[i].fitness = fitness_fn(population + i);
     total_fitness += population[i].fitness;
   }
 

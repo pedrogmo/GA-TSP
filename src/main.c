@@ -4,7 +4,7 @@
 
 #include "population.h"
 
-#define N_GENERATIONS 50000u
+#define N_GENERATIONS 1000u
 
 extern const struct element *fittest(const struct element *);
 
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     best = fittest(population);
     printf("Fittest: %s %lf %lf%%\n", best->tour, best->fitness, best->probability * 100.0);
 
-    reproduce(population);
+    reproduce_truncation(population);
     update_fit_prob(population);
   }
 

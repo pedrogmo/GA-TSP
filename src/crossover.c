@@ -4,7 +4,7 @@
 #include <assert.h>
 #include "crossover.h"
 
-#define PMX_METHOD 2
+#define PMX_METHOD 1
 
 #define MAX(X, Y) ((X) > (Y)) ? (X) : (Y)
 #define MIN(X, Y) ((X) < (Y)) ? (X) : (Y)

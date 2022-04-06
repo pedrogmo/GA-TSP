@@ -4,7 +4,7 @@
 #include "population.h"
 
 #define K_SUS 2
-#define K_TRUC 50
+#define K_TRUNC 50
 
 extern struct element *rws(struct element *population);
 extern struct element *sus(struct element *population);
