@@ -116,9 +116,7 @@ void initialise(struct element *population)
 void reproduce_rws(struct element *population)
 {
   size_t i = 0u;
-  struct element  *p1 = NULL,
-                  *p2 = NULL,
-                  old_generation[POPULATION_SIZE];
+  struct element old_generation[POPULATION_SIZE];
 
   /* Sort population by fitness */
   qsort(population, POPULATION_SIZE, sizeof(*population), &sort_probability);
@@ -129,7 +127,8 @@ void reproduce_rws(struct element *population)
   for (i = 0u; i < POPULATION_SIZE; ++i)
   {
     /* Select two parents using RWS */
-    p1 = rws(old_generation);
+    const struct element  *p1 = rws(old_generation),
+                          *p2 = NULL;
     do
     {
       p2 = rws(old_generation);
@@ -137,7 +136,7 @@ void reproduce_rws(struct element *population)
     while(p2 == p1);
 
     /* Crossover two parents making one child */
-    pmx(p1->tour, p2->tour, population[i].tour, N_CITIES - 1);
+    cx(p1->tour, p2->tour, population[i].tour, N_CITIES - 1);
 
     mutate(population + i);
   }
@@ -169,7 +168,7 @@ void reproduce_truncation(struct element *population)
                       *f1 = population + i;
 
       /* Crossover two parents making one child */
-      pmx(p1->tour, p2->tour, f1->tour, N_CITIES - 1u);
+      cx(p1->tour, p2->tour, f1->tour, N_CITIES - 1u);
 
       mutate(f1);
 

@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     best = fittest(population);
     printf("Fittest: %s %lf %lf%%\n", best->tour, best->fitness, best->probability * 100.0);
 
-    reproduce_truncation(population);
+    reproduce_rws(population);
     update_fit_prob(population);
   }
 
