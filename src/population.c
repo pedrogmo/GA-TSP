@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-
 #include "selection.h"
 #include "crossover.h"
 
@@ -197,7 +196,7 @@ double fitness_fn(const struct element *solution)
 
   total_distance += DISTANCES[from][0u];
 
-  return 1.0 / total_distance;
+  return 1.0 / (double) total_distance;;
 }
 
 void update_fit_prob(struct element *population)

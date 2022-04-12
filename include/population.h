@@ -1,7 +1,7 @@
 #ifndef POPULATION_H
 #define POPULATION_H
 
-#define POPULATION_SIZE 200
+#define POPULATION_SIZE 500
 #define N_CITIES 21
 #define MUTATION_RATE 0.01
 

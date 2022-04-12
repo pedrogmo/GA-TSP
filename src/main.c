@@ -4,9 +4,10 @@
 
 #include "population.h"
 
-#define N_GENERATIONS 1000u
+#define N_GENERATIONS 100u
 
-extern const struct element *fittest(const struct element *);
+static const struct element *fittest(const struct element *);
+static void print_generation(const struct element *);
 
 int main(int argc, char **argv)
 {
@@ -30,15 +31,16 @@ int main(int argc, char **argv)
   /* Termination condition: N generations */
   for(gen = 1u; gen <= N_GENERATIONS; ++gen)
   {
-    best = fittest(population);
-    printf("Fittest: %s %lf %lf%%\n", best->tour, best->fitness, best->probability * 100.0);
-
     reproduce_rws(population);
     update_fit_prob(population);
+
+    /*printf("-------- Gen %zu --------\n", gen);
+    print_generation(population);
+    putchar('\n');*/
   }
 
   best = fittest(population);
-  printf("Solution: %s\n", best->tour);
+  printf("Solution:\t%s\t%lf\t%lf%%\n", best->tour, best->fitness, best->probability * 100.0);
 
   return EXIT_SUCCESS;
 }
@@ -55,4 +57,19 @@ const struct element *fittest(const struct element *population)
   }
 
   return population + best;
+}
+
+void print_generation(const struct element *population)
+{
+  const struct element  *end = population + POPULATION_SIZE,
+                        *best = fittest(population);
+
+  for(; population < end; ++population)
+  {
+    printf("%s\t%lf\t%lf%%", population->tour, population->fitness, population->probability * 100.0);
+    if (best == population)
+      puts(" (Fittest)");
+    else
+      putchar('\n');
+  }
 }
