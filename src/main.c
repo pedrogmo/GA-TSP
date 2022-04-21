@@ -4,10 +4,10 @@
 
 #include "population.h"
 
-#define N_GENERATIONS 100u
+#define N_GENERATIONS 1000u
 
 static const struct element *fittest(const struct element *);
-static void print_generation(const struct element *);
+/*static void print_generation(const struct element *);*/
 
 int main(int argc, char **argv)
 {
